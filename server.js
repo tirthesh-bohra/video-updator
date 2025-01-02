@@ -1,8 +1,9 @@
 const appBuilder = require('./src/express/index.js');
+const db = require('./src/config/database.js');
 require('dotenv').config();
 
-const config = {};
-const app = appBuilder(config);
+const context = {dal: db()};
+const app = appBuilder(context);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

@@ -1,6 +1,6 @@
-const { nanoid } = require('nanoid');
+const { v4 } = require('uuid');
 
 module.exports = (req, _, next) => {
-  req.context = { traceId: nanoid() };
+  req.context = { traceId: v4() };
   next();
 };
