@@ -7,8 +7,8 @@ module.exports = (context) => {
     const app = express();
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
-    mountRoutes(app, context);
     mountMiddlewares(app);
+    mountRoutes(app, context);
 
     return app;
 };
