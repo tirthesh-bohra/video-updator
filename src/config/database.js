@@ -6,7 +6,7 @@ const getDatabase = async () => {
     dbManager = new DatabaseManager();
     await dbManager.initialize();
   }
-  return dbManager.db;
+  return dbManager.getDatabase();
 };
 
 process.on('SIGINT', async () => {

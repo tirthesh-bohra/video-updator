@@ -1,43 +1,60 @@
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
+const { Router } = require('express');
 const authFactory = require('./auth-wrapper');
-const lastResortErrorHandler = require('./last-resort-error-handler');
 
-function getRouters() {
+async function getRouters() {
     const resolversPath = path.join(__dirname, '..', 'resolvers');
-    const files = fs.readdirSync(resolversPath);
-    return files.map((file) => {
+    const files = await fs.readdir(resolversPath);
+    
+    const routers = [];
+    for (const file of files) {
         const filePath = path.join(resolversPath, file);
-        if(!(fs.statSync(filePath).isFile() && filePath.endsWith('.js'))) return [];
-          return require(filePath);
-      });
-}
-
-module.exports = (app, context) => {
-    const routerBuilders = getRouters();
-    const authMiddleware = authFactory(context);
-
-    for(const builders of routerBuilders) {
-        const r = builders(context);
-        if(r.auth) {
-            app.route(r.route)[r.method](authMiddleware, async (req, res, next) => {
-                try {
-                    await r.resolver(req, res, next);
-                } catch (error) {
-                    next(error);
-                }
-            });
-        } else {
-            app.route(r.route)[r.method](async (req, res, next) => {
-                try {
-                    await r.resolver(req, res, next);
-                } catch (error) {
-                    next(error);
-                }
-            });
+        const stat = await fs.stat(filePath);
+        
+        if (stat.isFile() && file.endsWith('.js')) {
+            routers.push(require(filePath));
         }
     }
-
-    app.get('/', (req, res) => res.send('Health Check OK'));
-    app.use(lastResortErrorHandler);
+    
+    return routers;
 }
+
+module.exports = async (app, context) => {
+    const router = Router();
+    const routerBuilders = await getRouters();
+    const authMiddleware = authFactory(context);
+
+    router.get('/health', (req, res) => {
+        res.json({
+            status: 'ok',
+            timestamp: new Date().toISOString(),
+            uptime: process.uptime()
+        });
+    });
+
+    for (const builder of routerBuilders) {
+        const route = builder(context);
+        const handlers = [route.resolver];
+
+        if (route.auth) {
+            handlers.unshift(authMiddleware);
+        }
+
+        if (route.method === 'post' && route.route === '/upload') {
+            handlers.unshift(context.upload.single('video'));
+        }
+
+        handlers.push(async (req, res, next) => {
+            try {
+                await route.resolver(req, res, next);
+            } catch (error) {
+                next(error);
+            }
+        });
+
+        router[route.method.toLowerCase()](route.route, ...handlers);
+    }
+
+    app.use('/api', router);
+};

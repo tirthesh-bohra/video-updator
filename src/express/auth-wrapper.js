@@ -1,8 +1,10 @@
+const { AppError } = require('./error-handlers');
+
 module.exports = (context) => {
     const tokens = new Set(process.env.TOKENS.split(','));
     return (req, res, next) => {
-        if (tokens.has(req.headers['x-access-token'])) return next();
+        if (tokens.has(req.headers.authorization)) return next();
 
-        return res.status(401).json({ error: 'Invalid API token' });
+        throw new AppError(401, 'Invalid or expired token');
     }
 }
