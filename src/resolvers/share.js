@@ -3,7 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 module.exports = (context) => ({
     auth: true,
     route: '/share',
-    method: 'get',
+    method: 'post',
     resolver: async (req, res) => {
       try {
         const { videoId, expiryHours = 24 } = req.body;

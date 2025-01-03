@@ -1,0 +1,119 @@
+{
+    "info": {
+      "name": "Video Service API",
+      "description": "API for managing video operations",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Update Limits",
+        "request": {
+          "method": "PUT",
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "url": {
+            "raw": "{{base_url}}/limits",
+            "host": ["{{base_url}}"],
+            "path": ["limits"]
+          },
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"maxDuration\": 120,\n  \"minDuration\": 30,\n  \"maxSize\": 500\n}"
+          }
+        }
+      },
+      {
+        "name": "Merge Videos",
+        "request": {
+          "method": "POST",
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "url": {
+            "raw": "{{base_url}}/merge",
+            "host": ["{{base_url}}"],
+            "path": ["merge"]
+          },
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"videoIds\": [\"video1\", \"video2\"]\n}"
+          }
+        }
+      },
+      {
+        "name": "Generate Share Link",
+        "request": {
+          "method": "POST",
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "url": {
+            "raw": "{{base_url}}/share",
+            "host": ["{{base_url}}"],
+            "path": ["share"]
+          },
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"videoId\": \"video1\",\n  \"expiryHours\": 24\n}"
+          }
+        }
+      },
+      {
+        "name": "View Shared Video",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "{{base_url}}/view/:shareId",
+            "host": ["{{base_url}}"],
+            "path": ["view", ":shareId"],
+            "variable": [
+              {
+                "key": "shareId",
+                "value": "example-video-id"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "name": "Trim Video",
+        "request": {
+          "method": "POST",
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "url": {
+            "raw": "{{base_url}}/trim",
+            "host": ["{{base_url}}"],
+            "path": ["trim"]
+          },
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"videoId\": \"video1\",\n  \"startTime\": 10,\n  \"endTime\": 50\n}"
+          }
+        }
+      },
+      {
+        "name": "Upload Video",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "multipart/form-data"
+            }
+          ],
+          "url": {
+            "raw": "{{base_url}}/upload",
+            "host": ["{{base_url}}"],
+            "path": ["upload"]
+          },
+          "body": {
+            "mode": "formdata",
+            "formdata": [
+              {
+                "key": "file",
+                "type": "file",
+                "src": "<path_to_video_file>"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+  
