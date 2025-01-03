@@ -2,11 +2,7 @@ const ffmpeg = require('fluent-ffmpeg');
 const fs = require('fs/promises');
 const fs1 = require('fs');
 const path = require('path');
-const { promisify } = require('util');
-const execAsync = promisify(require('child_process').exec);
-
-ffmpeg.setFfprobePath('C:\\ffmpeg\\bin\\ffprobe.exe'); // Hardcoded need to fix this
-ffmpeg.setFfmpegPath('C:\\ffmpeg\\bin\\ffmpeg.exe'); // Hardcoded need to fix this
+const which = require('which');
 
 class VideoService {
   constructor(limits, config) {
@@ -14,6 +10,50 @@ class VideoService {
     this.maxSize = limits.maxSize;
     this.minDuration = limits.minDuration;
     this.config = config;
+    this.setupFFmpeg();
+  }
+
+  setupFFmpeg() {
+    try {
+      // First attempt: Try to find FFmpeg in PATH
+      const ffmpegPath = which.sync('ffmpeg');
+      const ffprobePath = which.sync('ffprobe');
+      
+      ffmpeg.setFfmpegPath(ffmpegPath);
+      ffmpeg.setFfprobePath(ffprobePath);
+    } catch (error) {
+      // Second attempt: Check common installation directories
+      const commonPaths = [
+        // Windows paths
+        'C:\\Program Files\\ffmpeg\\bin',
+        'C:\\ffmpeg\\bin',
+        // Unix-like paths
+        '/usr/bin',
+        '/usr/local/bin',
+        '/opt/homebrew/bin',
+        path.join(process.env.HOME || '', 'ffmpeg/bin')
+      ];
+
+      let found = false;
+      for (const basePath of commonPaths) {
+        const ffmpegExe = process.platform === 'win32' ? 'ffmpeg.exe' : 'ffmpeg';
+        const ffprobeExe = process.platform === 'win32' ? 'ffprobe.exe' : 'ffprobe';
+        
+        const ffmpegPath = path.join(basePath, ffmpegExe);
+        const ffprobePath = path.join(basePath, ffprobeExe);
+
+        if (fs1.existsSync(ffmpegPath) && fs1.existsSync(ffprobePath)) {
+          ffmpeg.setFfmpegPath(ffmpegPath);
+          ffmpeg.setFfprobePath(ffprobePath);
+          found = true;
+          break;
+        }
+      }
+
+      if (!found) {
+        throw new Error('FFmpeg binaries not found. Please ensure FFmpeg is installed and accessible.');
+      }
+    }
   }
 
   getLimits() {
