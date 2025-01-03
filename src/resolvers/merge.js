@@ -22,7 +22,7 @@ module.exports = (context) => ({
         videoIds
       );
 
-      if (videos.some(v => !v)) {
+      if (videos.some(v => !v || !v.filename)) {
         return res.status(404).json({ error: 'One or more videos not found' });
       }
 

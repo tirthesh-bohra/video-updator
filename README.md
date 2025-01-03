@@ -46,6 +46,14 @@ Before you begin, ensure you have the following installed:
 2. Access the API at `http://localhost:3000` (or your configured port).
 
 
+### 🛠 Running Tests
+
+Run the tests to verify the functionality:
+```sh
+npm test
+```
+
+---
 ## ⚙️ Project Structure
 
 ```
@@ -74,6 +82,14 @@ video-updator
 │   │   ├── mount-middlewares.js
 │   │   ├── mount-routes.js
 │   │   ├── prime-request-context.js
+│   ├── tests
+│   │   ├── view-shared.test.js
+│   │   ├── limits.test.js
+│   │   ├── merge.test.js
+│   │   ├── share.test.js
+│   │   ├── trim.test.js
+│   │   ├── upload.test.js
+│   ├── services
 ├── uploads
 ├── processed
 ├── temp
@@ -113,5 +129,18 @@ video-updator
 | File      | Summary                                                                                                      | Module       |
 |:----------|:-----------------------------------------------------------------------------------------------------------|:-------------|
 | index.js    | Entry point for the server, initializing routes and middleware.                                             | src/express/index.js   |
+
+</details>
+
+<details closed><summary>Tests</summary>
+
+| File                 | Summary                                                                                              | Module                 |
+|:---------------------|:---------------------------------------------------------------------------------------------------|:-----------------------|
+| view-shared.test.js | Contains comprehensive test cases for view-shared route. | src/test/view-shared.test.js |
+| limits.test.js | Contains comprehensive test cases for limits route. | src/test/limits.test.js |
+| merge.test.js | Contains comprehensive test cases for merge route. | src/test/merge.test.js |
+| share.test.js | Contains comprehensive test cases for share route. | src/test/share.test.js |
+| trim.test.js | Contains comprehensive test cases for trim route. | src/test/trim.test.js |
+| upload.test.js | Contains comprehensive test cases for upload route. | src/test/upload.test.js |
 
 </details>

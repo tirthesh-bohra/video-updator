@@ -21,7 +21,7 @@ module.exports = (context) => ({
           [videoId]
         );
         
-        if (!video) {
+        if (!video || !video.filename) {
           return res.status(404).json({ error: 'Video not found' });
         }
   

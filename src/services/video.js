@@ -15,14 +15,12 @@ class VideoService {
 
   setupFFmpeg() {
     try {
-      // First attempt: Try to find FFmpeg in PATH
       const ffmpegPath = which.sync('ffmpeg');
       const ffprobePath = which.sync('ffprobe');
       
       ffmpeg.setFfmpegPath(ffmpegPath);
       ffmpeg.setFfprobePath(ffprobePath);
     } catch (error) {
-      // Second attempt: Check common installation directories
       const commonPaths = [
         // Windows paths
         'C:\\Program Files\\ffmpeg\\bin',

@@ -11,13 +11,6 @@ module.exports = (context) => ({
         return res.status(400).json({ error: 'No file uploaded' });
       }
 
-      const fileExtension = path.extname(req.file.originalname).toLowerCase();
-      if (!context.VideoService.config.ALLOWED_TYPES.includes(fileExtension)) {
-        return res.status(400).json({ 
-          error: `Invalid file type. Allowed types: ${context.VideoService.config.ALLOWED_TYPES.join(', ')}` 
-        });
-      }
-
       const metadata = await context.VideoService.validateVideo(req.file.path);
       const videoId = uuidv4();
       const { filename } = await context.VideoService.saveFile(req.file);
