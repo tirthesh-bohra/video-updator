@@ -21,6 +21,7 @@ Before you begin, ensure you have the following installed:
 2. [FFmpeg](https://ffmpeg.org/download.html) - Configure the paths to `ffmpeg` and `ffprobe` binaries in your system.
 3. Make sure PORT 3000 is open or you can configure it in .env file
 4. Create a base_url variable in you postman in order to run the collection it should loop something like this `http://localhost:3001/api`
+5. Add Authorization header and any token in it set in you .env file.
 
 ### 💻 Installation
 
