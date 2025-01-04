@@ -1,5 +1,5 @@
 const request = require('supertest');
-const makeApp = require('./dummy/app');
+const makeApp = require('../dummy/app');
 const { Readable } = require('stream');
 
 describe('GET /view/:shareId', () => {

@@ -21,7 +21,7 @@ Before you begin, ensure you have the following installed:
 2. [FFmpeg](https://ffmpeg.org/download.html) - Configure the paths to `ffmpeg` and `ffprobe` binaries in your system.
 3. Make sure PORT 3000 is open or you can configure it in .env file
 4. Create a base_url variable in you postman in order to run the collection it should loop something like this `http://localhost:3001/api`
-5. Add Authorization header and any token in it set in you .env file.
+5. Add Authorization header in each of your request and you can create a random token for it by setting up in .env file something like: `TOKENS=jahkgvfkjav,jahfghjav`
 
 ### 💻 Installation
 
@@ -48,9 +48,19 @@ Before you begin, ensure you have the following installed:
 
 ### 🛠 Running Tests
 
-Run the tests to verify the functionality:
+Run set of comprehensive e2e and unit tests to verify the functionality:
 ```sh
 npm test
+```
+
+Run just the e2e tests to verify each routes' functionality:
+```sh
+npm run test:e2e
+```
+
+Run just the unit tests to verify the each components of core video service functionality:
+```sh
+npm run test:unit
 ```
 
 ---
@@ -83,13 +93,15 @@ video-updator
 │   │   ├── mount-routes.js
 │   │   ├── prime-request-context.js
 │   ├── tests
-│   │   ├── view-shared.test.js
-│   │   ├── limits.test.js
-│   │   ├── merge.test.js
-│   │   ├── share.test.js
-│   │   ├── trim.test.js
-│   │   ├── upload.test.js
-│   ├── services
+│   │   ├── e2e-tests
+│   │   │   ├── view-shared.test.js
+│   │   │   ├── limits.test.js
+│   │   │   ├── merge.test.js
+│   │   │   ├── share.test.js
+│   │   │   ├── trim.test.js
+│   │   │   ├── upload.test.js
+│   │   ├── unit-tests
+│   │   │   ├── video-service.test.js
 ├── uploads
 ├── processed
 ├── temp
@@ -112,7 +124,8 @@ video-updator
 | share.js | Handles creation of shared video link with expiry                                                                           | src/resolvers/share.js |
 | limits.js | Updates limits to be set for video size, min duration and max duration                                                                           | src/resolvers/limits.js |
 | merge.js | Processes the received videos ids and merges them together                                                                         | src/resolvers/merge.js |
-| trim.js | Trims the given video id as per the start and end times                     | src/resolvers/merge.js |
+| trim.js | Trims the given video id as per the start and end times                     | src/resolvers/trim.js |
+| upload.js | Uploads the given video in our local directory                     | src/resolvers/upload.js |
 
 </details>
 
@@ -136,11 +149,12 @@ video-updator
 
 | File                 | Summary                                                                                              | Module                 |
 |:---------------------|:---------------------------------------------------------------------------------------------------|:-----------------------|
-| view-shared.test.js | Contains comprehensive test cases for view-shared route. | src/test/view-shared.test.js |
-| limits.test.js | Contains comprehensive test cases for limits route. | src/test/limits.test.js |
-| merge.test.js | Contains comprehensive test cases for merge route. | src/test/merge.test.js |
-| share.test.js | Contains comprehensive test cases for share route. | src/test/share.test.js |
-| trim.test.js | Contains comprehensive test cases for trim route. | src/test/trim.test.js |
-| upload.test.js | Contains comprehensive test cases for upload route. | src/test/upload.test.js |
+| view-shared.test.js | Contains comprehensive test cases for view-shared route. | src/tests/e2e-tests/view-shared.test.js |
+| limits.test.js | Contains comprehensive test cases for limits route. |  src/tests/e2e-tests/limits.test.js |
+| merge.test.js | Contains comprehensive test cases for merge route. |  src/tests/e2e-tests/merge.test.js |
+| share.test.js | Contains comprehensive test cases for share route. |  src/tests/e2e-tests/share.test.js |
+| trim.test.js | Contains comprehensive test cases for trim route. |  src/tests/e2e-tests/trim.test.js |
+| upload.test.js | Contains comprehensive test cases for upload route. |  src/tests/e2e-tests/upload.test.js |
+| video-service.test.js | Contains comprehensive units tests for each components of video service. |  src/tests/unit-tests/upload.test.js |
 
 </details>

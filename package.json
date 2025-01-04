@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "test:unit": "jest --testPathPattern=tests/unit",
+    "test:e2e": "jest --testPathPattern=tests/e2e"
   },
   "keywords": [],
   "author": "",

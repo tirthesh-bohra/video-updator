@@ -1,5 +1,5 @@
 const request = require('supertest');
-const makeApp = require('./dummy/app');
+const makeApp = require('../dummy/app');
 
 jest.mock('uuid', () => ({
     v4: jest.fn(() => 'mock-share-id')
