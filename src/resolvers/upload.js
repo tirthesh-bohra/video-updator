@@ -27,7 +27,6 @@ module.exports = (context) => ({
         uploadedAt: new Date().toISOString()
       });
     } catch (error) {
-      await context.VideoService.cleanup();
       res.status(400).json({ error: error.message });
     }
   }

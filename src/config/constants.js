@@ -2,7 +2,6 @@ const path = require('path');
 
 const STORAGE_CONFIG = {
   UPLOAD_DIR: path.join(__dirname, '../../uploads'),
-  TEMP_DIR: path.join(__dirname, '../../temp'),
   PROCESSED_DIR: path.join(__dirname, '../../processed'),
   ALLOWED_TYPES: ['.mp4', '.avi', '.mov'],
   MAX_VIDEO_SIZE: 25 * 1024 * 1024,

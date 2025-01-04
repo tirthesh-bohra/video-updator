@@ -65,7 +65,6 @@ class VideoService {
   async initialize() {
     await Promise.all([
       fs.mkdir(this.config.UPLOAD_DIR, { recursive: true }),
-      fs.mkdir(this.config.TEMP_DIR, { recursive: true }),
       fs.mkdir(this.config.PROCESSED_DIR, { recursive: true })
     ]);
   }
@@ -154,19 +153,6 @@ class VideoService {
         .on('error', (err) => reject(new Error('Error merging videos: ' + err.message)))
         .mergeToFile(outputPath);
     });
-  }
-
-  async cleanup() {
-    try {
-      const tempFiles = await fs.readdir(this.config.TEMP_DIR);
-      await Promise.all(
-        tempFiles.map(file => 
-          fs.unlink(path.join(this.config.TEMP_DIR, file))
-        )
-      );
-    } catch (error) {
-      console.error('Error during cleanup:', error);
-    }
   }
 
   async streamFile(filePath) {

@@ -32,7 +32,7 @@ module.exports = async (context) => {
 
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
-            cb(null, context.VideoService.config.TEMP_DIR);
+            cb(null, context.VideoService.config.UPLOAD_DIR);
         },
         filename: (req, file, cb) => {
             const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;

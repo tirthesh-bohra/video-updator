@@ -93,24 +93,9 @@ describe('VideoService', () => {
     it('should create necessary directories', async () => {
       await videoService.initialize();
       
-      expect(fs.mkdir).toHaveBeenCalledTimes(3);
+      expect(fs.mkdir).toHaveBeenCalledTimes(2);
       expect(fs.mkdir).toHaveBeenCalledWith(mockConfig.UPLOAD_DIR, { recursive: true });
-      expect(fs.mkdir).toHaveBeenCalledWith(mockConfig.TEMP_DIR, { recursive: true });
       expect(fs.mkdir).toHaveBeenCalledWith(mockConfig.PROCESSED_DIR, { recursive: true });
-    });
-  });
-
-  describe('saveFile', () => {
-    it('should save uploaded file and cleanup temporary file', async () => {
-      const mockFile = {
-        path: '/tmp/upload',
-        originalname: 'test.mp4'
-      };
-
-      await videoService.saveFile(mockFile);
-      
-      expect(fs.copyFile).toHaveBeenCalled();
-      expect(fs.unlink).toHaveBeenCalledWith(mockFile.path);
     });
   });
 
@@ -225,30 +210,6 @@ describe('VideoService', () => {
       await expect(videoService.mergeVideos(['input1.mp4', 'input2.mp4'], 'output.mp4'))
         .rejects
         .toThrow('Input file not found');
-    });
-  });
-
-  describe('cleanup', () => {
-    it('should remove all files in temp directory', async () => {
-      const mockFiles = ['file1.mp4', 'file2.mp4'];
-      fs.readdir.mockResolvedValue(mockFiles);
-
-      await videoService.cleanup();
-      
-      expect(fs.unlink).toHaveBeenCalledTimes(mockFiles.length);
-      mockFiles.forEach(file => {
-        expect(fs.unlink).toHaveBeenCalledWith(path.join(mockConfig.TEMP_DIR, file));
-      });
-    });
-
-    it('should handle cleanup errors gracefully', async () => {
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-      fs.readdir.mockRejectedValue(new Error('Read error'));
-
-      await videoService.cleanup();
-      
-      expect(consoleSpy).toHaveBeenCalled();
-      consoleSpy.mockRestore();
     });
   });
 

@@ -34,7 +34,6 @@ async function startServer() {
             server.close(async () => {
                 console.log('HTTP server closed');
                 try {
-                    await context.VideoService.cleanup();
                     await context.dal.close();
                     console.log('Cleanup completed');
                     process.exit(0);

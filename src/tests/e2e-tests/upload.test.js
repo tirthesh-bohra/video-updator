@@ -90,20 +90,6 @@ describe('POST /upload', () => {
         expect(response.body.error).toBe('Database error');
     });
     
-    it('should cleanup temporary files on error', async () => {
-        const cleanupSpy = jest.spyOn(context.VideoService, 'cleanup').mockResolvedValue();
-    
-        jest.spyOn(context.VideoService, 'validateVideo').mockRejectedValue(new Error('Invalid video file'));
-    
-        const response = await request(app)
-        .post('/api/upload').set('Authorization', token)
-        .attach('video', Buffer.from('dummy data'), mockFile.originalname);
-    
-        expect(response.status).toBe(400);
-        expect(response.body.error).toBe('Invalid video file');
-        expect(cleanupSpy).toHaveBeenCalled();
-    });
-    
     it('should handle files with special characters in the filename', async () => {
         const specialCharFile = { ...mockFile, originalname: 'v!d3o@#$%.mp4' };
     
